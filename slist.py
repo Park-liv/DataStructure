@@ -4,7 +4,7 @@ class SList:
             self.item = item
             self.next = link
 
-    def __init__(self): #SList를 불러오면 head가 바로 생성
+    def __init__(self): # SList를 불러오면 head가 바로 생성
         self.head = None
         self.size = 0
 
