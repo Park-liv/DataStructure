@@ -59,6 +59,9 @@ class DynamicArray:
     def _make_array(self, c):  # nonpublic utitity
         """Return new array with capacity c."""
         return (c * ctypes.py_object)()  # see ctypes documentation
+                                         # types.py_object is a type
+                                         # ctypes.py_object * size is a type
+                                         # ctypes.py_object() is an instance of atype
 
     def insert(self, k, value):
         """Insert value at index k, shifting subsequent values rightward."""
@@ -81,3 +84,54 @@ class DynamicArray:
                 self._n -= 1  # we have one less item
                 return  # exit immediately
         raise ValueError('value not found')  # only reached if no match
+
+    def remove_end(self):
+        """Remove the final element and return the value of it"""
+        v = self._A[self._n-1]
+        self._A[self._n] = None
+        self._n -= 1  # we have one less item
+        return  v
+
+    def __getitem_all__(self):
+        print_A = []
+        for i in range(self._n):
+            print_A.append(self._A[i])
+        return print_A
+
+    def shift_k(self, k, LR):
+        if LR == 1:
+            for i in range(k):
+                self.insert(0, self._A[self._n - 1])
+                self.remove_end()
+        elif LR == 0:
+            for i in range(k):
+                self.insert(self._n, self._A[0])
+                for j in range(1, self._n):
+                    self._A[j -1] = self._A[j]
+                self._n -= 1
+        return self._A
+
+def main():
+    da = DynamicArray()
+    da.append(1)
+    da.append(12)
+    da.append(23)
+    da.append(35)
+    da.append(44)
+    da.append(55)
+    da.append(67)
+    da.append(89)
+    da.append(100)
+    print(da.__getitem__(2))
+    da.insert(5,78)
+    print(da.__getitem_all__())
+    print(da.remove_end())
+    print(da.__getitem_all__())
+    print(da.remove_end())
+    print(da.__getitem_all__())
+    da.shift_k(3,0)
+    print(da.__getitem_all__())
+    da.shift_k(5,1)
+    print(da.__getitem_all__())
+if __name__ == "__main__":
+    main()
